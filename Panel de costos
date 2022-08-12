@@ -1,0 +1,285 @@
+SELECT b.* FROM(SELECT
+counter         AS "Guia",
+amount          AS "Monto",
+DATE(updated_at)AS "Fecha",
+TO_CHAR(updated_at, 'YYYY-MM-DD') AS "Fecha2",
+packagesize     AS "Size",
+UA.company      AS "Cliente",
+c.deliverytype  AS "Ship Method",
+d.driversuser   AS "Veloz",
+d.providers     AS "Proveedor",
+v.vehicle       AS "Vehiculo",
+ct.station_code AS "Origen",
+cs.region       AS "Region",
+cs.zonificacion AS "Zonificacion",
+cs.locality     AS "Alcaldía",
+cs."state"      AS "Entidad",
+cs.station_code AS "Destino",
+CASE WHEN cs.region IN ('Metro') THEN 41.00 ELSE 42.50 END AS "Precio",
+CASE WHEN amount >= 50 THEN 'COD' ELSE 'Other' END AS "PaymentMethod",
+CASE WHEN cs.station_code IN ('GDL1') THEN 11.50 ELSE 11.50 END AS "C.U.FM",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN 1078.25-539.12
+WHEN cs.station_code IN ('CAM1') THEN TRUNC(2573.17/3,2)-1286.58/3
+WHEN cs.station_code IN ('VSA1') THEN TRUNC(2573.17/3,2)-1286.58/3
+WHEN cs.station_code IN ('YUC1') THEN TRUNC(2573.17/3,2)-1286.58/3
+WHEN cs.station_code IN ('COA1') THEN 2573.17-1286.58
+WHEN cs.station_code IN ('COA2') THEN 1039.73-519.87
+WHEN cs.station_code IN ('CUL1') THEN TRUNC(1522.52*2,2)-1522.52
+WHEN cs.station_code IN ('CV1')  THEN 1032.93
+WHEN cs.station_code IN ('GDL1') THEN TRUNC(((2573.17*2)+1522.52),2)-3334.42
+WHEN cs.station_code IN ('GR1')  THEN 705+519.87
+WHEN cs.station_code IN ('GTO1') THEN TRUNC(2573.17/4,2)-1286.58/4
+WHEN cs.station_code IN ('GTO3') THEN TRUNC(2573.17/4,2)-1286.58/4
+WHEN cs.station_code IN ('QER1') THEN TRUNC(2573.17/4,2)-1286.58/4
+WHEN cs.station_code IN ('SJR1') THEN TRUNC(2573.17/4,2)-1286.58/4
+WHEN cs.station_code IN ('GTO2') THEN 643.82
+WHEN cs.station_code IN ('MCH1') THEN 643.82
+WHEN cs.station_code IN ('MCH2') THEN 519.87
+WHEN cs.station_code IN ('MHXQ') THEN 1032.93
+WHEN cs.station_code IN ('MSFE') THEN 1032.93
+WHEN cs.station_code IN ('MTY1') THEN (2573.17+1522.52)-2047.84
+WHEN cs.station_code IN ('MTY2') THEN (2573.17+1522.52)-2047.84
+WHEN cs.station_code IN ('MX1')  THEN 1286.58*2
+WHEN cs.station_code IN ('MX3')  THEN 1286.58*2
+WHEN cs.station_code IN ('MX4')  THEN 1032.93*2
+WHEN cs.station_code IN ('MX5')  THEN 1286.58*2
+WHEN cs.station_code IN ('OAX1') THEN 1032.93
+WHEN cs.station_code IN ('PB1')  THEN 1286.58*2
+WHEN cs.station_code IN ('PCH1') THEN 705.00
+WHEN cs.station_code IN ('SIN1') THEN TRUNC(1522.52/2,2)-761.26/2
+WHEN cs.station_code IN ('TPQ1') THEN TRUNC(1522.52/2,2)-761.26/2
+WHEN cs.station_code IN ('SLP1') THEN 1286.58
+WHEN cs.station_code IN ('SPMX4') THEN 1032.93
+WHEN cs.station_code IN ('TLC1') THEN 1032.93
+WHEN cs.station_code IN ('VER1') THEN TRUNC(1286.58/2,2)
+WHEN cs.station_code IN ('VER2') THEN TRUNC(1286.58/2,2)
+WHEN cs.station_code IN ('VER3') THEN 761.26
+WHEN cs.station_code IN ('VER4') THEN 539.12
+WHEN cs.station_code IN ('VLL1') THEN 1522.52-761.26
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "Leasing",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN 2760.00
+WHEN cs.station_code IN ('CAM1') THEN TRUNC(7584.00/3,2)
+WHEN cs.station_code IN ('VSA1') THEN TRUNC(7584.00/3,2)
+WHEN cs.station_code IN ('YUC1') THEN TRUNC(7584.00/3,2)
+WHEN cs.station_code IN ('COA1') THEN 9600.00
+WHEN cs.station_code IN ('COA2') THEN 5520.00
+WHEN cs.station_code IN ('CUL1') THEN TRUNC(8040.00*2,2)
+WHEN cs.station_code IN ('CV1')  THEN 1560.00
+WHEN cs.station_code IN ('GDL1') THEN TRUNC(((5520.00*2)+3360.00),2)
+WHEN cs.station_code IN ('GR1')  THEN 2160.00+2880.00
+WHEN cs.station_code IN ('GTO1') THEN TRUNC(1920.00/4,2)
+WHEN cs.station_code IN ('GTO3') THEN TRUNC(1920.00/4,2)
+WHEN cs.station_code IN ('QER1') THEN TRUNC(1920.00/4,2)
+WHEN cs.station_code IN ('SJR1') THEN TRUNC(1920.00/4,2)
+WHEN cs.station_code IN ('GTO2') THEN 2160.00
+WHEN cs.station_code IN ('MCH1') THEN 1800.00
+WHEN cs.station_code IN ('MCH2') THEN 2160.00
+WHEN cs.station_code IN ('MHXQ') THEN 840.00
+WHEN cs.station_code IN ('MSFE') THEN 1080.00
+WHEN cs.station_code IN ('MTY1') THEN 9100.80+5688.00
+WHEN cs.station_code IN ('MTY2') THEN 9100.80+5688.00
+WHEN cs.station_code IN ('MX1')  THEN 182.40*2
+WHEN cs.station_code IN ('MX3')  THEN 264.00*2
+WHEN cs.station_code IN ('MX4')  THEN 168.00*2
+WHEN cs.station_code IN ('MX5')  THEN 182.40*2
+WHEN cs.station_code IN ('OAX1') THEN 5184.00
+WHEN cs.station_code IN ('PB1')  THEN 2160.00*2
+WHEN cs.station_code IN ('PCH1') THEN 468.00
+WHEN cs.station_code IN ('SIN1') THEN TRUNC(2340.00/2,2)
+WHEN cs.station_code IN ('TPQ1') THEN TRUNC(2340.00/2,2)
+WHEN cs.station_code IN ('SLP1') THEN 3744.00
+WHEN cs.station_code IN ('SPMX4') THEN 189.00
+WHEN cs.station_code IN ('TLC1') THEN 816.00
+WHEN cs.station_code IN ('VER1') THEN TRUNC(4800.00/2,2)
+WHEN cs.station_code IN ('VER2') THEN TRUNC(4800.00/2,2)
+WHEN cs.station_code IN ('VER3') THEN 4020.00
+WHEN cs.station_code IN ('VER4') THEN 826.67
+WHEN cs.station_code IN ('VLL1') THEN 3000.00
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "Fuel",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN 810.67-405.33
+WHEN cs.station_code IN ('CAM1') THEN TRUNC(1943.47/3,2)-(971.73/3)
+WHEN cs.station_code IN ('VSA1') THEN TRUNC(1943.47/3,2)-(971.73/3)
+WHEN cs.station_code IN ('YUC1') THEN TRUNC(1943.47/3,2)-(971.73/3)
+WHEN cs.station_code IN ('COA1') THEN 1943.47-971.73
+WHEN cs.station_code IN ('COA2') THEN 789.97-394.99
+WHEN cs.station_code IN ('CUL1') THEN TRUNC(810.67*2,2)-810.67
+WHEN cs.station_code IN ('CV1')  THEN 971.73
+WHEN cs.station_code IN ('GDL1') THEN TRUNC(((1943.47*2)+810.67),2)-(971.73*2)
+WHEN cs.station_code IN ('GR1')  THEN 320.00+394.99
+WHEN cs.station_code IN ('GTO1') THEN TRUNC(1943.47/4,2)-(971.73/4)
+WHEN cs.station_code IN ('GTO3') THEN TRUNC(1943.47/4,2)-(971.73/4)
+WHEN cs.station_code IN ('QER1') THEN TRUNC(1943.47/4,2)-(971.73/4)
+WHEN cs.station_code IN ('SJR1') THEN TRUNC(1943.47/4,2)-(971.73/4)
+WHEN cs.station_code IN ('GTO2') THEN 405.33
+WHEN cs.station_code IN ('MCH1') THEN 405.33
+WHEN cs.station_code IN ('MCH2') THEN 394.99
+WHEN cs.station_code IN ('MHXQ') THEN 971.73
+WHEN cs.station_code IN ('MSFE') THEN 971.73
+WHEN cs.station_code IN ('MTY1') THEN 1943.47+810.67-971.73
+WHEN cs.station_code IN ('MTY2') THEN 1943.47+810.67-971.73
+WHEN cs.station_code IN ('MX1')  THEN 971.73*2
+WHEN cs.station_code IN ('MX3')  THEN 971.73*2
+WHEN cs.station_code IN ('MX4')  THEN 971.73*2
+WHEN cs.station_code IN ('MX5')  THEN 971.73*2
+WHEN cs.station_code IN ('OAX1') THEN 971.73
+WHEN cs.station_code IN ('PB1')  THEN 971.73*2
+WHEN cs.station_code IN ('PCH1') THEN 320.00
+WHEN cs.station_code IN ('SIN1') THEN TRUNC(810.67/2,2)
+WHEN cs.station_code IN ('TPQ1') THEN TRUNC(810.67/2,2)
+WHEN cs.station_code IN ('SLP1') THEN 971.73
+WHEN cs.station_code IN ('SPMX4') THEN 971.73
+WHEN cs.station_code IN ('TLC1') THEN 971.73
+WHEN cs.station_code IN ('VER1') THEN TRUNC(971.73/2,2)
+WHEN cs.station_code IN ('VER2') THEN TRUNC(971.73/2,2)
+WHEN cs.station_code IN ('VER3') THEN 405.33
+WHEN cs.station_code IN ('VER4') THEN 405.33
+WHEN cs.station_code IN ('VLL1') THEN 810.67
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "Mantenimiento",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN 926.60
+WHEN cs.station_code IN ('CAM1') THEN TRUNC(3964.00/3,2)
+WHEN cs.station_code IN ('VSA1') THEN TRUNC(3964.00/3,2)
+WHEN cs.station_code IN ('YUC1') THEN TRUNC(3964.00/3,2)
+WHEN cs.station_code IN ('COA1') THEN 1620.00
+WHEN cs.station_code IN ('COA2') THEN 1080.00
+WHEN cs.station_code IN ('CUL1') THEN TRUNC(4510.00*2,2)
+WHEN cs.station_code IN ('CV1')  THEN 1122.00
+WHEN cs.station_code IN ('GDL1') THEN TRUNC(((3596.00*2)+2026.00),2)
+WHEN cs.station_code IN ('GR1')  THEN 1496.00*2
+WHEN cs.station_code IN ('GTO1') THEN TRUNC(770.00/4,2)
+WHEN cs.station_code IN ('GTO3') THEN TRUNC(770.00/4,2)
+WHEN cs.station_code IN ('QER1') THEN TRUNC(770.00/4,2)
+WHEN cs.station_code IN ('SJR1') THEN TRUNC(770.00/4,2)
+WHEN cs.station_code IN ('GTO2') THEN 1460.00
+WHEN cs.station_code IN ('MCH1') THEN 1758.00
+WHEN cs.station_code IN ('MCH2') THEN 742.60
+WHEN cs.station_code IN ('MHXQ') THEN 186.00
+WHEN cs.station_code IN ('MSFE') THEN 186.00
+WHEN cs.station_code IN ('MTY1') THEN 1612.00+892.00
+WHEN cs.station_code IN ('MTY2') THEN 1612.00+892.00
+WHEN cs.station_code IN ('MX1')  THEN 0
+WHEN cs.station_code IN ('MX3')  THEN 0
+WHEN cs.station_code IN ('MX4')  THEN 0
+WHEN cs.station_code IN ('MX5')  THEN 0
+WHEN cs.station_code IN ('OAX1') THEN 2516.00
+WHEN cs.station_code IN ('PB1')  THEN 1146.00*2
+WHEN cs.station_code IN ('PCH1') THEN 368.00
+WHEN cs.station_code IN ('SIN1') THEN TRUNC(2574.00/2,2)
+WHEN cs.station_code IN ('TPQ1') THEN TRUNC(2574.00/2,2)
+WHEN cs.station_code IN ('SLP1') THEN 942.00
+WHEN cs.station_code IN ('SPMX4') THEN 0
+WHEN cs.station_code IN ('TLC1') THEN 596.00
+WHEN cs.station_code IN ('VER1') THEN TRUNC(2826.00/2,2)
+WHEN cs.station_code IN ('VER2') THEN TRUNC(2826.00/2,2)
+WHEN cs.station_code IN ('VER3') THEN 2308.00
+WHEN cs.station_code IN ('VER4') THEN 1376.00
+WHEN cs.station_code IN ('VLL1') THEN 3964.00
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "Peaje",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN 1392.00
+WHEN cs.station_code IN ('CAM1') THEN TRUNC(2784.00/3,2)
+WHEN cs.station_code IN ('VSA1') THEN TRUNC(2784.00/3,2)
+WHEN cs.station_code IN ('YUC1') THEN TRUNC(2784.00/3,2)
+WHEN cs.station_code IN ('COA1') THEN 6496.00
+WHEN cs.station_code IN ('COA2') THEN 6496.00
+WHEN cs.station_code IN ('CUL1') THEN TRUNC(7424.00*2,2)
+WHEN cs.station_code IN ('CV1')  THEN 348.00
+WHEN cs.station_code IN ('GDL1') THEN TRUNC(3712.00+(1856.00*2),2)
+WHEN cs.station_code IN ('GR1')  THEN 464.00*2
+WHEN cs.station_code IN ('GTO1') THEN TRUNC(3212.00/4,2)
+WHEN cs.station_code IN ('GTO3') THEN TRUNC(3712.00/4,2)
+WHEN cs.station_code IN ('QER1') THEN TRUNC(3712.00/4,2)
+WHEN cs.station_code IN ('SJR1') THEN TRUNC(3712.00/4,2)
+WHEN cs.station_code IN ('GTO2') THEN 464.00
+WHEN cs.station_code IN ('MCH1') THEN 464.00
+WHEN cs.station_code IN ('MCH2') THEN 464.00
+WHEN cs.station_code IN ('MHXQ') THEN 348.00
+WHEN cs.station_code IN ('MSFE') THEN 348.00
+WHEN cs.station_code IN ('MTY1') THEN 6496.00*2
+WHEN cs.station_code IN ('MTY2') THEN 6496.00*2
+WHEN cs.station_code IN ('MX1')  THEN 696.00*2
+WHEN cs.station_code IN ('MX3')  THEN 696.00*2
+WHEN cs.station_code IN ('MX4')  THEN 696.00*2
+WHEN cs.station_code IN ('MX5')  THEN 696.00*2
+WHEN cs.station_code IN ('OAX1') THEN 696.00
+WHEN cs.station_code IN ('PB1')  THEN 464.00*2
+WHEN cs.station_code IN ('PCH1') THEN 464.00
+WHEN cs.station_code IN ('SIN1') THEN TRUNC(3712.00/2,2)
+WHEN cs.station_code IN ('TPQ1') THEN TRUNC(3712.00/2,2)
+WHEN cs.station_code IN ('SLP1') THEN 928.00
+WHEN cs.station_code IN ('SPMX4') THEN 348.00
+WHEN cs.station_code IN ('TLC1') THEN 348.00
+WHEN cs.station_code IN ('VER1') THEN TRUNC(928.00/2,2)
+WHEN cs.station_code IN ('VER2') THEN TRUNC(928.00/2,2)
+WHEN cs.station_code IN ('VER3') THEN 696.00
+WHEN cs.station_code IN ('VER4') THEN 464.00
+WHEN cs.station_code IN ('VLL1') THEN 3712.00
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "Nómina",
+CASE
+WHEN cs.station_code IN ('AGU1') THEN (6967.52-405.33)-(539.12)
+WHEN cs.station_code IN ('CAM1') THEN (8287.54-(971.73/3))-1286.58/3
+WHEN cs.station_code IN ('VSA1') THEN (6282.88-(971.73/3))-1286.58/3
+WHEN cs.station_code IN ('YUC1') THEN (8287.54-(971.73/3))-1286.58/3
+WHEN cs.station_code IN ('COA1') THEN (22232.64-971.73)-1286.58
+WHEN cs.station_code IN ('COA2') THEN (14925.70-394.99)-519.87
+WHEN cs.station_code IN ('CUL1') THEN (44614.39-810.67)-1522.52
+WHEN cs.station_code IN ('CV1')  THEN 5034.66
+WHEN cs.station_code IN ('GDL1') THEN (46374.71-1943.47)-3334.42
+WHEN cs.station_code IN ('GR1')  THEN 10899.86
+WHEN cs.station_code IN ('GTO1') THEN (3187.92-(971.73/4))-1286.58/4
+WHEN cs.station_code IN ('GTO3') THEN (2604.62-(971.73/4))-1286.58/4
+WHEN cs.station_code IN ('QER1') THEN (3187.92-(971.73/4))-1286.58/4
+WHEN cs.station_code IN ('SJR1') THEN (2604.62-(971.73/4))-1286.58/4
+WHEN cs.station_code IN ('GTO2') THEN 9291.74
+WHEN cs.station_code IN ('MCH1') THEN 5071.15
+WHEN cs.station_code IN ('MCH2') THEN 4281.46
+WHEN cs.station_code IN ('MHXQ') THEN 3378.66
+WHEN cs.station_code IN ('MSFE') THEN 3618.66
+WHEN cs.station_code IN ('MTY1') THEN (45035.22-971.73)-2047.84
+WHEN cs.station_code IN ('MTY2') THEN (45035.22-971.73)-2047.84
+WHEN cs.station_code IN ('MX1')  THEN 6273.42
+WHEN cs.station_code IN ('MX3')  THEN 6436.62
+WHEN cs.station_code IN ('MX4')  THEN 5737.32
+WHEN cs.station_code IN ('MX5')  THEN 6273.42
+WHEN cs.station_code IN ('OAX1') THEN 10400.66
+WHEN cs.station_code IN ('PB1')  THEN 12056.62
+WHEN cs.station_code IN ('PCH1') THEN 2325.00
+WHEN cs.station_code IN ('SIN1') THEN (5479.60-(405.33/2))-761.26/2
+WHEN cs.station_code IN ('TPQ1') THEN (11560.19-(405.33/2))-761.26/2
+WHEN cs.station_code IN ('SLP1') THEN 7872.31
+WHEN cs.station_code IN ('SPMX4') THEN 2541.66
+WHEN cs.station_code IN ('TLC1') THEN 3764.66
+WHEN cs.station_code IN ('VER1') THEN 11192.75
+WHEN cs.station_code IN ('VER2') THEN 9498.82
+WHEN cs.station_code IN ('VER3') THEN 8190.59
+WHEN cs.station_code IN ('VER4') THEN 8733.44
+WHEN cs.station_code IN ('VLL1') THEN (21139.78-405.33)-761.26
+WHEN cs.station_code IN ('MX2')  THEN 0
+END AS "C.T.MM",
+ROW_NUMBER() over (PARTITION BY counter, currentstatus) AS flag1
+	FROM orders a
+		inner join catpickupadress      AS paddress ON paddress.id = pickupadressid
+		inner join catdestinationadress AS daddress ON daddress.id = destionationadressid
+		inner join useraccounts         AS UA       ON UA.id = userid
+		right join drivers              AS d        ON d.id = driverid
+		right join catvehicles          AS v        ON v.id = vehiclesid
+		inner join catypedeliveries c               ON deliverytypeid = c.id
+		inner join zipcodes_station_v6  AS ct       ON ct.zipcode = paddress.zipcode
+		inner join zipcodes_station_v6 cs           ON daddress.zipcode = cs.zipcode
+		full  join logsorders l                     ON l.orderid = a.id
+	WHERE currentstatus IN ('6', '12', '19')
+	AND updated_at BETWEEN '2022-08-05 00:00:00.000000' AND '2026-01-01 23:59:59.000000'
+    AND l.statusid      IN ('4', '4.1', '4.2')
+    AND c.id            IN ('1', '2', '4')
+    AND cs.station_code IS NOT NULL
+    AND UA.country      IN ('MEX')
+) AS b
+WHERE flag1 = 1
