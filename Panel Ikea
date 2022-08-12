@@ -1,0 +1,68 @@
+SELECT b.*
+From (SELECT             
+counter            as "Guia",
+receivedorderid    as "# Cliente",
+currentstatus      as "Estatus",
+l.statusid         as "Primer Estatus",
+DATE(updated_at)   as "Fecha",
+TO_CHAR(updated_at, 'Month')          as "Mes",
+TO_CHAR(updated_at, 'YYYY')           as "Año",
+TO_CHAR(l.created, 'YYYY-MM-DD')      as "Fecha Primer Mov",
+TO_CHAR(orders.created, 'YYYY-MM-DD') as "Creado",
+cat.description    as "Estado",
+packagesize        as "Size",
+c.deliverytype 	   as "Ship Method",
+d.driversuser      as "Veloz",
+d.providers        as "Proveedor",
+v.vehicle          as "Vehiculo",
+daddress.lat       as "Latitud",
+daddress.long      as "Longitud",
+daddress.zipcode   as "Zipcode",
+ct.coverage_type   as "Frecuencia",
+ct.region          as "Region",
+ct.zonificacion    as "Zonificacion",
+ct."state"         as "Entidad",
+ct.locality        as "Alcaldia",
+ct.station_code    as "Destino",
+cs.station_code    as "From",
+EXTRACT(DAY FROM age(updated_at,date(l.created))) AS "LT",
+CASE
+WHEN EXTRACT(DAY FROM age(updated_at,date(l.created))) = 0 then 'On Time'
+WHEN EXTRACT(DAY FROM age(updated_at,date(l.created))) = 1 and c.deliverytype not like 'SameDay' then 'On Time'
+WHEN EXTRACT(DAY FROM age(updated_at,date(l.created))) >= 1 and c.deliverytype = 'SameDay' then 'Delay'
+WHEN EXTRACT(DAY FROM age(updated_at,date(l.created))) > 1 then 'Delay'
+END AS "OTD",
+CASE
+WHEN currentstatus in ('6', '12', '19') THEN 'Entregado' ELSE 'No entregado'
+END AS "DS",
+CASE
+WHEN currentstatus in ('6', '12', '19') AND EXTRACT(DAY FROM age(updated_at,date(l.created))) <= 1 THEN 'OTIF'
+WHEN currentstatus in ('6', '12', '19') AND EXTRACT(DAY FROM age(updated_at,date(l.created))) > 1 THEN 'Completo delay'
+WHEN currentstatus in ('5') AND EXTRACT(DAY FROM age(updated_at,date(l.created))) <= 1 THEN 'Parcial on time'
+WHEN currentstatus in ('5') AND EXTRACT(DAY FROM age(updated_at,date(l.created))) > 1 THEN 'Parcial delay' ELSE 'No entregado'
+END AS "OTIF",
+CASE
+WHEN receivedorderid ilike 'S612%' THEN 'Tienda'
+WHEN receivedorderid ilike 'S634%' THEN 'Ecommerce' ELSE 'Retorno'
+END AS "Origen",
+row_number() over (PARTITION BY counter, currentstatus) AS flag1	   
+FROM orders
+full outer join catpickupadress      as paddress on paddress.id = pickupadressid
+full outer join catdestinationadress as daddress on daddress.id = destionationadressid
+full outer join useraccounts         as UA       on UA.id = userid
+full outer join drivers              as d        on d.id = driverid
+full outer join catstatus cat                    on cat.code = orders.currentstatus
+full outer join catvehicles          as v        on v.id = vehiclesid
+full outer join catypedeliveries c               on orders.deliverytypeid = c.id
+full outer join zipcodes_station_v6  as cs       on cs.zipcode = paddress.zipcode
+full outer join zipcodes_station_v6 ct           on daddress.zipcode = ct.zipcode
+full outer join logsorders l on l.orderid = orders.id
+WHERE currentstatus in ('6', '12', '19', '3', '10', '17', '8', '16', '9', '18', '40', '21', '22', '14', '14.1', '14.2', '14.4', '14.11', '40.1', '40.2', '5', '15', '15.1', '4', '4.1', '4.2', '47')
+and updated_at between '2019-01-01 00:00:00.000000' and '2030-01-01 23:59:59.000000'
+and l.statusid in ('2', '4', '4.1', '4.2')
+and UA.country in ('MEX')
+and c.id in ('1', '2', '3', '4')
+and ct.station_code is not null
+and UA.company ilike 'Ikea%'
+) as b
+where flag1 = 1
